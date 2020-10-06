@@ -1,0 +1,24 @@
+sudo: required
+
+language: generic
+
+services:
+    - docker
+
+before_install:
+    - docker build -t locnguyen1986/docker-complex -f ./client/DockerFile.dev ./client
+
+script:
+    - docker run -e CI=true locnguyen1986/docker-complex npm test -- --coverage
+
+after_success:
+    - docker build -t locnguyen1986/docker-complex-client ./client    
+    - docker build -t locnguyen1986/docker-complex-nginx ./nginx    
+    - docker build -t locnguyen1986/docker-complex-server ./server    
+    - docker build -t locnguyen1986/docker-complex-worker ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push locnguyen1986/docker-complex-client
+    - docker push locnguyen1986/docker-complex-nginx
+    - docker push locnguyen1986/docker-complex-server
+    - docker push locnguyen1986/docker-complex-worker
+
