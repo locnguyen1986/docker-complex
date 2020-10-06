@@ -6,7 +6,7 @@ services:
     - docker
 
 before_install:
-    - docker build -t locnguyen1986/docker-complex -f ./client/DockerFile.dev ./client
+    - docker build -t locnguyen1986/docker-complex -f ./client/Dockerfile.dev ./client
 
 script:
     - docker run -e CI=true locnguyen1986/docker-complex npm test -- --coverage
