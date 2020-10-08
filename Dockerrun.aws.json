@@ -5,19 +5,22 @@
             "name" : "complex-client",
             "image": "locnguyen1986/docker-complex-client",
             "hostname" : "client",
-            "essential": false
+            "essential": false,
+            "memory": 256
         },
         {
             "name" : "complex-server",
             "image": "locnguyen1986/docker-complex-server",
             "hostname" : "server-api",
-            "essential": false
+            "essential": false,
+            "memory": 256
         },
         {
             "name" : "complex-worker",
             "image": "locnguyen1986/docker-complex-worker",
             "hostname" : "worker",
-            "essential": false
+            "essential": false,
+            "memory": 256
         },
         {
             "name" : "complex-nginx",
@@ -30,7 +33,8 @@
                     "containerPort": 80
                 }
             ],
-            "links":  ["complex-client", "complex-server"]
+            "links":  ["complex-client", "complex-server"],
+            "memory": 256
         }
     ]
 }
