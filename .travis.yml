@@ -22,3 +22,19 @@ after_success:
     - docker push locnguyen1986/docker-complex-server
     - docker push locnguyen1986/docker-complex-worker
 
+deploy:
+    provider: elasticbeanstalk
+    region: ap-southeast-1
+    app: docker-complex
+    env: DockerComplex-env
+    bucket_name: elasticbeanstalk-ap-southeast-1-588592860616
+    bucket_path: docker-complex
+    on:
+        branch: master    
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+
+
+    deploy:
+        edge: true
+        provider: elasticbeanstalk
