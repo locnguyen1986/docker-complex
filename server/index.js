@@ -20,9 +20,9 @@ const pgClient = new Pool({
 });
 
 pgClient.on('connect', () => {
-  //pgClient
-  //  .query('CREATE TABLE fib_values (number INT)')
-  //  .catch((err) => console.log(err));
+  pgClient
+    .query('CREATE TABLE fib_values (number INT)')
+    .catch((err) => console.log(err));
 });
 
 // Redis Client Setup
