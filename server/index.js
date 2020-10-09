@@ -21,7 +21,7 @@ const pgClient = new Pool({
 
 pgClient.on('connect', () => {
   pgClient
-    .query('CREATE TABLE IF NOT EXISTS values (number INT)')
+    .query('CREATE TABLE fib_values (number INT)')
     .catch((err) => console.log(err));
 });
 
@@ -41,7 +41,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/values/all', async (req, res) => {
-  const values = await pgClient.query('SELECT * from values');
+  console.log('query data from fib_values all')
+  const values = await pgClient.query('SELECT * from fib_values');
 
   res.send(values.rows);
 });
@@ -61,11 +62,11 @@ app.post('/values', async (req, res) => {
 
   redisClient.hset('values', index, 'Nothing yet!');
   redisPublisher.publish('insert', index);
-  pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
+  pgClient.query('INSERT INTO fib_values(number) VALUES($1)', [index]);
 
   res.send({ working: true });
 });
 
 app.listen(5000, (err) => {
-  console.log('Listening');
+  console.log('Listening on 5000');
 });

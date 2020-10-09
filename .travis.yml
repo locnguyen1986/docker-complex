@@ -1,36 +1,36 @@
 sudo: required
+
 language: generic
 
 services:
-  - docker
+    - docker
 
 before_install:
-  - docker build -t locnguyen1986/react-test -f ./client/Dockerfile.dev ./client
+    - docker build -t locnguyen1986/docker-complex -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run locnguyen1986/react-test npm test -- --coverage
+    - docker run -e CI=true locnguyen1986/docker-complex npm test -- --coverage
 
 after_success:
-  - docker build -t locnguyen1986/multi-client ./client
-  - docker build -t locnguyen1986/multi-nginx ./nginx
-  - docker build -t locnguyen1986/multi-server ./server
-  - docker build -t locnguyen1986/multi-worker ./worker
-  # Log in to the docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # Take those images and push them to docker hub
-  - docker push locnguyen1986/multi-client
-  - docker push locnguyen1986/multi-nginx
-  - docker push locnguyen1986/multi-server
-  - docker push locnguyen1986/multi-worker
+    - docker build -t locnguyen1986/docker-complex-client ./client    
+    - docker build -t locnguyen1986/docker-complex-nginx ./nginx    
+    - docker build -t locnguyen1986/docker-complex-server ./server    
+    - docker build -t locnguyen1986/docker-complex-worker ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push locnguyen1986/docker-complex-client
+    - docker push locnguyen1986/docker-complex-nginx
+    - docker push locnguyen1986/docker-complex-server
+    - docker push locnguyen1986/docker-complex-worker
 
 deploy:
-  provider: elasticbeanstalk
-  region: 'ap-southeast-1'
-  app: 'docker-complex'
-  env: 'DockerComplex-env'
-  bucket_name: 'elasticbeanstalk-ap-southeast-1-588592860616'
-  bucket_path: 'docker-complex'
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
+    edge: true
+    provider: elasticbeanstalk
+    region: 'ap-southeast-1'
+    app: 'docker-complex'
+    env: 'DockerComplex-env'
+    bucket_name: 'elasticbeanstalk-ap-southeast-1-588592860616'
+    bucket_path: 'docker-complex'
+    on:
+        branch: master    
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
